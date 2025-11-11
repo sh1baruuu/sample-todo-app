@@ -1,9 +1,14 @@
-import express from 'express';
-import { json } from 'body-parser';
-import userRoutes from './routes/users.routes';
+import express, { type Express } from "express";
+import userRoutes from "./routes/user.routes";
+import { logger } from "./middleware/logger.middleware";
 
-const app = express();
-app.use(json());
-app.use('/api/users', userRoutes);
+const app: Express = express();
+app.use(express.json());
+app.use(logger);
+
+app.use("/api/users", userRoutes);
+app.get("/", (req, res) => {
+    res.send("Welcome to the Simple Todo App API");
+});
 
 export default app;
