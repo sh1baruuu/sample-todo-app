@@ -1,7 +1,7 @@
+import { eq } from "drizzle-orm";
 import { Request, Response } from "express";
 import db from "../config/db";
 import { todos } from "../db/schema";
-import { eq } from "drizzle-orm";
 
 
 // GET /api/todos
@@ -33,7 +33,7 @@ export async function getAllTodos(req: Request, res: Response) {
 export async function addNewTodo(req: Request, res: Response) {
     try {
         const user_id = (req as any).user?.id; // from JWT middleware
-        const { title } = await req.body;
+        const { title } = req.body;
 
         if (!title) {
             return res.status(400).json({ message: "Title is required" });
@@ -49,6 +49,8 @@ export async function addNewTodo(req: Request, res: Response) {
             data: newTodo,
         });
     } catch (error) {
+        console.log(error);
+        
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
